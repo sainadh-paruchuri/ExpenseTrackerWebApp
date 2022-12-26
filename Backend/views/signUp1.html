@@ -18,12 +18,16 @@
                 padding-left: 3rem;
                 box-shadow: 12px 12px 12px black;
                 /* background-color: rgb(16, 244, 16); */
-                background-color: white;
+                background-color: rgb(237, 230, 230);
+                background-image: url(https://play-lh.googleusercontent.com/b-iMXzxfTZcrWB9PQHtGffagDum8Kb6-asGagci8XMBPMU7e800iSp1JjCF1fCNf2M8=h500);
+                 background-repeat: no-repeat;
+                background-size: cover;
                 border-radius: 10px;
+
 
             }
             body{
-                background-image: url(./images/expensebackground.png);
+                background-image: url(https://play-lh.googleusercontent.com/b-iMXzxfTZcrWB9PQHtGffagDum8Kb6-asGagci8XMBPMU7e800iSp1JjCF1fCNf2M8=h500);
                 background-repeat: no-repeat;
                 background-size: cover;
             }
@@ -50,7 +54,7 @@
     <section class="Form">
         <div class="container my-lg-5">
             <div class="row">
-                <form action='/users' class="form" method="post">
+                <form action="/users" class="form" method="POST">
                 <h1>SignUp</h1>
                 <div class="col-lg-6">
                   <div class="form-group">
@@ -76,11 +80,25 @@
         integrity="sha512-QTnb9BQkG4fBYIt9JGvYmxPpd6TBeKp6lsUrtiVQsrJ9sb33Bn9s0wMQO9qVBFbPX3xHRAsBHvXlcsrnJjExjg=="
         crossorigin="anonymous" referrerpolicy="no-referrer"></script>
     <script>
+        
         // const signup=document.getElementById('signup');
-        // signup.addEventListener('click',()=>{
-        //     const name = document.getElementById('name')
+        // signup.addEventListener('click',(event)=>{
+        //     event.preventDefault();
+        //     const name = document.getElementById('name').innerText;
         //     const email = document.getElementById('email')
         //     const password=document.getElementById('password');
+        //     console.log(name);
+
+        //     // axios.post('http://localhost:4000/users',{
+        //     //     username:name,
+        //     //     useremail:email,
+        //     //     password:password
+        //     // })
+        //     // .then((result) => {
+        //     //     console.log(result)
+        //     // }).catch((err) => {
+        //     //     console.log(err)
+        //     // });
 
 
         // })
