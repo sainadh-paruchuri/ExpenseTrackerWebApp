@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
@@ -10,80 +11,155 @@
     <script defer src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js"
         integrity="sha384-MrcW6ZMFYlzcLA8Nl+NtUVF0sA7MsXsP1UyJoMp4YLEuNSfAP+JcXn/tWtIaxVXM"
         crossorigin="anonymous"></script>
-        <style>
-            .form{
-                /* border: 1px solid black; */
-                width: 50%;
-                margin: auto;
-                padding-left: 3rem;
-                box-shadow: 12px 12px 12px black;
-                /* background-color: rgb(16, 244, 16); */
-                background-color: white;
-                border-radius: 10px;
+    <style>
+        .form {
+            /* border: 1px solid black; */
+            width: 50%;
+            margin: auto;
+            padding-left: 3rem;
+            box-shadow: 12px 12px 12px black;
+            /* background-color: rgb(16, 244, 16); */
+            background-color: rgb(237, 230, 230);
+            background-image: url(https://play-lh.googleusercontent.com/b-iMXzxfTZcrWB9PQHtGffagDum8Kb6-asGagci8XMBPMU7e800iSp1JjCF1fCNf2M8=h500);
+            background-repeat: no-repeat;
+            background-size: cover;
+            border-radius: 10px;
 
-            }
-            body{
-                background-image: url(./images/expensebackground.png);
-                background-repeat: no-repeat;
-                background-size: cover;
-            }
-            button{
-                width: 100%;
-                margin: 1.5rem 0px;
-                height: 2rem;
-                border: none;
-                background-color: black;
-                color: white;
-                border-radius: 5px;
-            }
-            button:hover{
-                background-color: white;
-                color: black;
-                border: 1px solid black;
-            }
-            a{
-                text-decoration: none;
-            }
-        </style>
+
+        }
+
+        body {
+            background-image: url(https://play-lh.googleusercontent.com/b-iMXzxfTZcrWB9PQHtGffagDum8Kb6-asGagci8XMBPMU7e800iSp1JjCF1fCNf2M8=h500);
+            background-repeat: no-repeat;
+            background-size: cover;
+        }
+
+        button {
+            width: 100%;
+            margin: 1.5rem 0px;
+            height: 2rem;
+            border: none;
+            background-color: black;
+            color: white;
+            border-radius: 5px;
+        }
+
+        button:hover {
+            background-color: white;
+            color: black;
+            border: 1px solid black;
+        }
+
+        a {
+            text-decoration: none;
+        }
+    </style>
 </head>
+
 <body>
     <section class="Form">
         <div class="container my-lg-5">
             <div class="row">
-                <form action='/users' class="form" method="post">
-                <h1>SignUp</h1>
-                <div class="col-lg-6">
-                  <div class="form-group">
-                    <label for="name" class="form-label">Name :</label>
-                    <input type="name" class="form-control" id="name" name="username" required autocomplete="on">
-                  </div>  
-                <div class="form-group">
-                    <label for="email" class="form-label">Email :</label>
-                    <input type="email" class="form-control" id="email" name="useremail"  autocomplete="on">
-                </div>
-                <div class="form-group">
-                    <label for="password" class="form-label">Password :</label>
-                    <input type="password" class="form-control" id="password" name="password" required autocomplete="on">
-                </div>
-                <button type="submit" id="signup">SignUp</button>
-                <h6>have an account? <a href="">Login</a></h6>
-                </div>
-            </form>
+                <form class="form" onsubmit="signup(event)">
+                    <h1>SignUp</h1>
+                    <div class="col-lg-6">
+                        <div class="form-group">
+                            <label for="username" class="form-label">Name :</label>
+                            <input type="text" class="form-control" id="username" name="username" required
+                                autocomplete="on">
+                        </div>
+                        <div class="form-group">
+                            <label for="useremail" class="form-label">Email :</label>
+                            <input type="email" class="form-control" id="useremail" name="useremail" autocomplete="on">
+                        </div>
+                        <div class="form-group">
+                            <label for="password" class="form-label">Password :</label>
+                            <input type="password" class="form-control" id="password" name="password" required
+                                autocomplete="on">
+                        </div>
+                        <button type="submit" id="signup">SignUp</button>
+                        <h6>have an account? <a href="login.html">Login</a></h6>
+                    </div>
+                </form>
             </div>
         </div>
     </section>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/axios/1.2.2/axios.min.js"
-        integrity="sha512-QTnb9BQkG4fBYIt9JGvYmxPpd6TBeKp6lsUrtiVQsrJ9sb33Bn9s0wMQO9qVBFbPX3xHRAsBHvXlcsrnJjExjg=="
-        crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/axios/1.1.3/axios.min.js"></script>
     <script>
+
+const signup=document.getElementById('signup')
+    
+
+signup.addEventListener('click',(e)=>{
+    e.preventDefault();
+    let name = document.getElementById('username').value;
+    let email = document.getElementById('useremail').value;
+    let password = document.getElementById('password').value;
+    let value=true;
+   console.log(name);
+   axios.get('http://localhost:4000/users')
+   .then(result=>{
+    result.data.forEach(element => {
+        if(element.useremail===email){
+            value=false;
+            return alert('user with this email already exist')
+        }
+    });
+   })
+   .catch(err=>console.log(err))
+   if(value){
+   axios.post('http://localhost:4000/users',{
+        username:name,
+        useremail:email,
+        password:password
+    })
+    .then((result) => {
+        console.log(result.data.msg);
+        alert(result.data.msg)
+    }).catch((err) => {
+        console.log(err);
+    });
+}
+
+})
+    //    const signup=document.getElementById('signup');
+    //    console.log(signup)
+    //    let name = document.getElementById('username').value;
+
+    //    signup.addEventListener('submit',(event)=>{
+    //      event.preventDefault();
+    //         console.log(name.innerText)
+        
+    //    })
+        // async function signup(event){
+        //     event.preventDefault();
+        //     const name= document.getElementById('username').value;
+        //     document.body.innerHTML=name;
+        //     console.log(name);
+        // }
+
         // const signup=document.getElementById('signup');
-        // signup.addEventListener('click',()=>{
-        //     const name = document.getElementById('name')
+        // signup.addEventListener('click',(event)=>{
+        //     event.preventDefault();
+        //     const name = document.getElementById('name').innerText;
         //     const email = document.getElementById('email')
         //     const password=document.getElementById('password');
+        //     console.log(name);
+
+        //     // axios.post('http://localhost:4000/users',{
+        //     //     username:name,
+        //     //     useremail:email,
+        //     //     password:password
+        //     // })
+        //     // .then((result) => {
+        //     //     console.log(result)
+        //     // }).catch((err) => {
+        //     //     console.log(err)
+        //     // });
 
 
         // })
     </script>
 </body>
+
 </html>
