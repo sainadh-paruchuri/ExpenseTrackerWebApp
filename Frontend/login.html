@@ -60,19 +60,19 @@
     <section class="Form">
         <div class="container my-lg-5">
             <div class="row">
-                <form action="/users" class="form" method="POST">
+                <form class="form">
                     <h1>Login</h1>
                     <div class="col-lg-6">
                         <div class="form-group">
                             <label for="email" class="form-label">Email :</label>
-                            <input type="email" class="form-control" id="email" name="useremail" autocomplete="on">
+                            <input type="email" class="form-control" id="useremail" name="useremail" autocomplete="on">
                         </div>
                         <div class="form-group">
                             <label for="password" class="form-label">Password :</label>
                             <input type="password" class="form-control" id="password" name="password" required
                                 autocomplete="on">
                         </div>
-                        <button type="submit" id="signup">Login</button>
+                        <button type="submit" id="login">Login</button>
                         <h6>Don't have an account? <a href="signUp1.html">SignUp</a></h6>
                     </div>
                 </form>
@@ -84,7 +84,31 @@
         crossorigin="anonymous" referrerpolicy="no-referrer"></script>
     <script>
 
+        const login=document.getElementById('login');
+        login.addEventListener('click',(e)=>{
+            e.preventDefault()
+            const email=document.getElementById('useremail').value;
+            const password=document.getElementById('password').value;
+            console.log(email);
+
+            axios.post('http://localhost:4000/login',{
+                useremail:email,
+                password:password
+            })
+            .then((result) => {
+                console.log(result.data.msg)
+                if(result.status==200){
+                    alert(result.data.msg)
+                }
+            }).catch((err) => {
+                if (err.response.status != 200) {
+                    alert(err.response.data.msg)
+                }
+                console.log(err);
+            });
+        })
     </script>
 </body>
+
 
 </html>

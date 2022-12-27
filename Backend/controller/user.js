@@ -31,4 +31,34 @@ exports.users=(req,res,next)=>{
     .catch(err=>console.log(err))
 }
    
+exports.login=(req,res,next)=>{
+    console.log(req.body);
+    let email=req.body.useremail;
+    let password=req.body.password;
+    let msg;
+    if(email.length<=0||email===''||password.length<=0||password===''){
+        return res.status(403).json({msg:'email or password are wrong'})
+    }
+    else{
+        User.findAll({where:{useremail:email}})
+        .then(result=>{
+            console.log(result==0)
+            if(result==0){
+                return res.status(404).json({msg:'User not found'})
+            }
+            if(result[0].useremail==email){
+            console.log(result[0].password);
+            if(result[0].password!='' && result[0].password==password){
+                res.status(200).json({msg:'User login sucessfully'})
+            }
+            else{
+                res.status(401).json({msg:'User not authorized'})
+            }
+             }
+            //  else{
+            //      return res.status(404).json({msg:'User not found'})
+            // }
+        })
+    }
+}
 
