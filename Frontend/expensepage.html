@@ -1,0 +1,208 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Login</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet"
+        integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous">
+    <script defer src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js"
+        integrity="sha384-MrcW6ZMFYlzcLA8Nl+NtUVF0sA7MsXsP1UyJoMp4YLEuNSfAP+JcXn/tWtIaxVXM"
+        crossorigin="anonymous"></script>
+    <style>
+        .form {
+            /* border: 1px solid black; */
+            width: 50%;
+            margin: auto;
+            padding-left: 3rem;
+            /* box-shadow: 12px 12px 12px black; */
+            /* background-color: rgb(16, 244, 16); */
+            background-color: rgb(237, 230, 230);
+            /* background-image: url(https://play-lh.googleusercontent.com/b-iMXzxfTZcrWB9PQHtGffagDum8Kb6-asGagci8XMBPMU7e800iSp1JjCF1fCNf2M8=h500); */
+            background-repeat: no-repeat;
+            background-size: cover;
+            border-radius: 10px;
+
+
+        }
+
+        body {
+          background-color: rgb(231, 227, 227);
+        }
+
+       #addExpense {
+            width: 100%;
+            margin: 1.5rem 0px;
+            height: 2rem;
+            border: none;
+            background-color: rgb(15, 223, 15);
+            color: white;
+            border-radius: 5px;
+        }
+
+        #addExpense:hover {
+            background-color: white;
+            color: black;
+            border: 1px solid black;
+        }
+
+        a {
+            text-decoration: none;
+        }
+        #header{
+            background-color: black;
+            color: white;
+        }
+        #table{
+           table-layout: fixed;
+           width: 100%;
+           text-align: center;
+        }
+         td {
+            border: 1px solid black;
+            /* word-wrap: break-word; */
+             word-break: break-all;
+        }
+        #delete{
+            margin-left: 1.8rem;
+            width: 6rem;
+            border-radius: 5px;
+            border: none;
+            background-color: red;
+            color:white;
+        }
+        
+        
+    </style>
+</head>
+
+<body>
+    <header class="card-header" id="header">
+        <h1>Day to Day Expenses</h1>
+    </header>
+    <section class="Form">
+        <div class="container my-lg-5">
+            <div class="row">
+                <form class="form">
+                    <div class="col-lg-6">
+                        <div class="form-group">
+                            <label for="amount" class="form-label">Amount :</label>
+                            <input type="number" class="form-control" id="amount" name="amount" required autocomplete="on">
+                        </div>
+                        <div class="form-group">
+                            <label for="description" class="form-label">Description :</label>   `           
+                            <input type="text" class="form-control" id="description" name="description" required
+                                autocomplete="on">
+                        </div>
+                        <div class="form-group">
+                            <label for="category" class="form-label">category :</label> 
+                            <select name="category" id="category" class="form-control">
+                                <option value="food">food</option>
+                                <option value="sports">sports</option>
+                                <option value="salary">salary</option>
+
+                            </select>
+                        </div>
+                        <button type="submit" id="addExpense">Add Expense</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </section>
+    <table class="table p-lg-5" id="table">
+        <thead>
+            <tr>
+                <th>Amount</th>
+                <th>Description</th>
+                <th>category</th>
+            </tr>
+        </thead>
+        <tbody id="tbody">
+            <tr>
+                <td>1</td>
+                <td>aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa</td>
+                <td>aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa</td>
+            </tr>
+        </tbody>
+
+    </table>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/axios/1.2.2/axios.min.js"
+        integrity="sha512-QTnb9BQkG4fBYIt9JGvYmxPpd6TBeKp6lsUrtiVQsrJ9sb33Bn9s0wMQO9qVBFbPX3xHRAsBHvXlcsrnJjExjg=="
+        crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+    <script>
+        const addExpense=document.getElementById('addExpense');
+        const tbody=document.getElementById('tbody')
+        //addExpense
+        addExpense.addEventListener('click',(e)=>{
+            e.preventDefault();
+            const amount=document.getElementById('amount').value;
+            const description = document.getElementById('description').value;
+            const category = document.getElementById('category').value;
+
+            axios.post('http://localhost:4000/expense',{
+                amount:amount,
+                description:description,
+                category:category
+            })
+            .then((result) => {
+                console.log(result);
+                alert(result.data.msg)
+                location.reload();
+            }).catch((err) => {
+                console.log(err);
+            });
+
+        })
+
+        //get Expenses
+        window.addEventListener('DOMContentLoaded',(event)=>{
+            axios.get('http://localhost:4000/getExpenses')
+            .then(result=>{
+                console.log(result)
+                result.data.forEach(element => {
+                    showExpensesOnScreen(element);
+                    
+                });
+            })
+            .catch(err=>{
+                console.log(err);
+            })
+        })
+        async function showExpensesOnScreen(element){
+            const {id,amount,description,category } =await element
+
+            const tr=document.createElement('tr');
+            tr.setAttribute('id',id);
+            const td1 = document.createElement('td');
+            td1.appendChild(document.createTextNode(`${amount}`))
+            const td2 = document.createElement('td');
+            td2.appendChild(document.createTextNode(`${description}`))
+            const td3 = document.createElement('td');
+            td3.appendChild(document.createTextNode(`${category}`))
+
+            const button=document.createElement('button');
+            button.appendChild(document.createTextNode('DELETE'))
+            button.setAttribute('id','delete')
+            td3.appendChild(button)
+
+
+
+            tr.appendChild(td1);
+            tr.appendChild(td2);
+            tr.appendChild(td3);
+            
+            tbody.appendChild(tr)
+
+
+
+
+            
+
+        }
+    </script>
+</body>
+
+
+</html>

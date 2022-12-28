@@ -11,5 +11,11 @@ router.get('/users',userController.users);
 
 router.post('/login',userController.login);
 
+router.post('/expense',userController.addExpense);
+
+router.get('/getExpenses',userController.getExpense);
+
+
 module.exports=router;
+
 

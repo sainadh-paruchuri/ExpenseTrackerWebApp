@@ -1,6 +1,9 @@
 const path=require('path')
 const User=require('../model/user')
 const bcrypt=require('bcrypt');
+const Expense=require('../model/expense')
+
+
 exports.signup=(req,res,next)=>{
     res.sendFile(path.join(__dirname,'..','views','signUp1.html'))
 
@@ -55,7 +58,7 @@ exports.login=(req,res,next)=>{
             if(result[0].useremail==email){
             console.log(result[0].password);
             bcrypt.compare(password,result[0].password,(err,result)=>{
-                 if(!err){
+                 if(result==true){
                 res.status(200).json({msg:'User login sucessfully'})
             }
             else{
@@ -72,3 +75,28 @@ exports.login=(req,res,next)=>{
     }
 }
 
+exports.addExpense=(req,res)=>{
+    console.log(req.body)
+    const {amount,description,category}=req.body
+    console.log(amount);
+    Expense.create({
+        amount,
+        description,
+        category
+    })
+    .then(result=>{
+        console.log(result);
+        res.status(200).json({msg:'succesfully added'})
+    })
+    .catch(err=>console.log(err))
+
+}
+
+exports.getExpense=(req,res)=>{
+    Expense.findAll()
+    .then(result=>{
+        res.status(200).json(result);
+        // console.log(result);
+        })
+    .catch(err=>console.log(err))
+}
