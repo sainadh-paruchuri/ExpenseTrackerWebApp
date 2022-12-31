@@ -2,6 +2,7 @@ const path=require('path')
 const User=require('../model/user')
 const bcrypt=require('bcrypt');
 const Expense=require('../model/expense')
+const jwt=require('jsonwebtoken') 
 
 
 exports.signup=(req,res,next)=>{
@@ -39,7 +40,10 @@ exports.users=(req,res,next)=>{
         })
     .catch(err=>console.log(err))
 }
-   
+
+function generateAccesToken(id){
+    return jwt.sign({userId:id },'b4eef7abb67e5f2aff0c187f6bb44fa79b90c895ba9c0d7727b59cd')
+}
 exports.login=(req,res,next)=>{
     console.log(req.body);
     let email=req.body.useremail;
@@ -57,9 +61,9 @@ exports.login=(req,res,next)=>{
             }
             if(result[0].useremail==email){
             console.log(result[0].password);
-            bcrypt.compare(password,result[0].password,(err,result)=>{
-                 if(result==true){
-                res.status(200).json({msg:'User login sucessfully'})
+            bcrypt.compare(password,result[0].password,(err,results)=>{
+                 if(results==true){
+                res.status(200).json({msg:'User login sucessfully',token:generateAccesToken(result[0].id)})
             }
             else{
                 res.status(401).json({msg:'User not authorized'})
@@ -77,6 +81,7 @@ exports.login=(req,res,next)=>{
 
 exports.addExpense=(req,res)=>{
     console.log(req.body)
+    
     const {amount,description,category}=req.body
     console.log(amount);
     Expense.create({
@@ -93,10 +98,12 @@ exports.addExpense=(req,res)=>{
 }
 
 exports.getExpense=(req,res)=>{
-    Expense.findAll()
-    .then(result=>{
-        res.status(200).json(result);
-        // console.log(result);
+    console.log(req.result.id);
+    console.log("hi hello");
+    Expense.findAll({where :{userId:req.result.id}})
+    .then(results=>{
+        res.status(200).json(results);
+        console.log(results);
         })
     .catch(err=>console.log(err))
 }

@@ -98,6 +98,8 @@
             .then((result) => {
                 console.log(result.data.msg)
                 if(result.status==200){
+                    console.log(result)
+                    localStorage.setItem('token',result.data.token)
                     alert(result.data.msg)
                     window.location.href="expensepage.html";
                 }

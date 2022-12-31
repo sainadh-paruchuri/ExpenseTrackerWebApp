@@ -158,7 +158,9 @@
 
         //get Expenses
         window.addEventListener('DOMContentLoaded',(event)=>{
-            axios.get('http://localhost:4000/getExpenses')
+           const tocken= localStorage.getItem('token');
+           console.log(tocken);
+            axios.get('http://localhost:4000/getExpenses',{headers:{"Authorization":tocken}})
             .then(result=>{
                 console.log(result)
                 result.data.forEach(element => {

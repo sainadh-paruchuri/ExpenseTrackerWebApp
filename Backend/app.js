@@ -4,8 +4,15 @@ const cors=require('cors')
 const path=require('path')
 const userRoutes=require('./routes/user');
 const sequelize=require('./util/database');
+const User=require('./model/user')
+const Expense=require('./model/expense')
+const crypto=require('crypto')
+
 
 const app=express();
+
+// const key1=crypto.randomBytes(32).toString('hex');
+// console.log(key1)
 
 
 // app.use(bodyParser.urlencoded({extended:true}))
@@ -13,6 +20,9 @@ app.use(bodyParser.json())
 app.use(cors())
 
 app.use(userRoutes)
+
+User.hasMany(Expense);
+Expense.belongsTo(User)
 
 
 
