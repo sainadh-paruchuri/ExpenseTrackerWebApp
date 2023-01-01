@@ -6,7 +6,8 @@ const userRoutes=require('./routes/user');
 const sequelize=require('./util/database');
 const User=require('./model/user')
 const Expense=require('./model/expense')
-const crypto=require('crypto')
+const crypto=require('crypto');
+const Order = require('./model/order');
 
 
 const app=express();
@@ -24,6 +25,8 @@ app.use(userRoutes)
 User.hasMany(Expense);
 Expense.belongsTo(User)
 
+User.hasMany(Order)
+Order.belongsTo(User)
 
 
 

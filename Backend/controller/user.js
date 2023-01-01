@@ -83,11 +83,14 @@ exports.addExpense=(req,res)=>{
     console.log(req.body)
     
     const {amount,description,category}=req.body
+    const userId=req.result.id
+    console.log(userId);
     console.log(amount);
     Expense.create({
         amount,
         description,
-        category
+        category,
+        userId
     })
     .then(result=>{
         console.log(result);

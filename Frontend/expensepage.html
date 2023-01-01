@@ -54,6 +54,9 @@
         #header{
             background-color: black;
             color: white;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
         }
         #table{
            table-layout: fixed;
@@ -73,6 +76,18 @@
             background-color: red;
             color:white;
         }
+        #premium{
+            height: 2rem;
+            background-color: black;
+            color: white;
+            font-size: 1.1rem;
+        }
+        #premium:hover{
+            background-color: rgb(15, 220, 15);
+            border: none;
+            border-radius: 0.5rem;
+        }
+
         
         
     </style>
@@ -81,6 +96,7 @@
 <body>
     <header class="card-header" id="header">
         <h1>Day to Day Expenses</h1>
+        <button id="premium">Buy Premium</button>
     </header>
     <section class="Form">
         <div class="container my-lg-5">
@@ -128,6 +144,7 @@
         </tbody>
 
     </table>
+    <script src="https://checkout.razorpay.com/v1/checkout.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/axios/1.2.2/axios.min.js"
         integrity="sha512-QTnb9BQkG4fBYIt9JGvYmxPpd6TBeKp6lsUrtiVQsrJ9sb33Bn9s0wMQO9qVBFbPX3xHRAsBHvXlcsrnJjExjg=="
         crossorigin="anonymous" referrerpolicy="no-referrer"></script>
@@ -140,12 +157,15 @@
             const amount=document.getElementById('amount').value;
             const description = document.getElementById('description').value;
             const category = document.getElementById('category').value;
+            const tocken = localStorage.getItem('token');
+
 
             axios.post('http://localhost:4000/expense',{
                 amount:amount,
                 description:description,
-                category:category
-            })
+                category:category,
+                
+            }, { headers: { "Authorization": tocken } })
             .then((result) => {
                 console.log(result);
                 alert(result.data.msg)
@@ -196,13 +216,41 @@
             tr.appendChild(td3);
             
             tbody.appendChild(tr)
+         }
+         document.getElementById('premium').onclick=async function(e){
+            const tocken=localStorage.getItem('token')
+            const response=await axios.get('http://localhost:4000/purchasepremium',{
+                headers:{"Authorization":tocken}
+            })
+            console.log(response);
+            var options =
+             {
+                 "key": response.data.key_id, // Enter the Key ID generated from the Dashboard
+                 "order_id": response.data.order.id,// For one time payment
+                 // This handler function will handle the success payment
+                 "handler": async function (response) {
+                    console.log(response);
+                     const res = await axios.post('http://localhost:4000/updatetransactionstatus', {
+                         order_id: options.order_id,
+                         payment_id: response.razorpay_payment_id,
+                     }, { headers: { "Authorization": tocken } })
 
+                     console.log(res)
+                     alert('You are a Premium User Now')
+                     document.getElementById('premium').innerHTML="you are a premium user";
+                     document.getElementById('premium').style='disabled'
 
+                 },
+             };
+             const rzp1 = new Razorpay(options);
+             rzp1.open();
+             e.preventDefault();
 
-
-            
-
-        }
+             rzp1.on('payment.failed', function (response) {
+                 console.log(response)
+                 alert('Something went wrong')
+             });
+         }
     </script>
 </body>
 
