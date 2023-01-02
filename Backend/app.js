@@ -4,6 +4,7 @@ const cors=require('cors')
 const path=require('path')
 const userRoutes=require('./routes/user');
 const premiumRoutes=require('./routes/premiumleader')
+const forgotRoutes=require('./routes/forgot')
 const sequelize=require('./util/database');
 const User=require('./model/user')
 const Expense=require('./model/expense')
@@ -23,6 +24,7 @@ app.use(cors())
 
 app.use(userRoutes)
 app.use(premiumRoutes)
+app.use(forgotRoutes)
 
 User.hasMany(Expense);
 Expense.belongsTo(User)
