@@ -41,8 +41,11 @@ exports.users=(req,res,next)=>{
     .catch(err=>console.log(err))
 }
 
-function generateAccesToken(id){
-    return jwt.sign({userId:id },'b4eef7abb67e5f2aff0c187f6bb44fa79b90c895ba9c0d7727b59cd')
+const generateAccesToken=(id,premium)=>{
+    return jwt.sign({userId:id,ispremium:premium },'b4eef7abb67e5f2aff0c187f6bb44fa79b90c895ba9c0d7727b59cd')
+}
+exports.generateAccesToken1=(id,premium)=>{
+    return jwt.sign({userId:id,ispremium:premium },'b4eef7abb67e5f2aff0c187f6bb44fa79b90c895ba9c0d7727b59cd')
 }
 exports.login=(req,res,next)=>{
     console.log(req.body);
@@ -63,7 +66,7 @@ exports.login=(req,res,next)=>{
             console.log(result[0].password);
             bcrypt.compare(password,result[0].password,(err,results)=>{
                  if(results==true){
-                res.status(200).json({msg:'User login sucessfully',token:generateAccesToken(result[0].id)})
+                res.status(200).json({msg:'User login sucessfully',token:generateAccesToken(result[0].id,result[0].ispremiumuser)})
             }
             else{
                 res.status(401).json({msg:'User not authorized'})
@@ -105,8 +108,10 @@ exports.getExpense=(req,res)=>{
     console.log("hi hello");
     Expense.findAll({where :{userId:req.result.id}})
     .then(results=>{
-        res.status(200).json(results);
+        res.status(200).json({ispremium:req.result.ispremiumuser,results:results});
         console.log(results);
         })
     .catch(err=>console.log(err))
 }
+
+
