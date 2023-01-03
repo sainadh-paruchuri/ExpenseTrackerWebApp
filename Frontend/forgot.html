@@ -63,6 +63,7 @@
                 <form class="form">
                     <h1>Forgot Password</h1>
                     <div class="col-lg-6">
+                        <div class="passwordlink text-center" ></div>
                         <div class="form-group">
                             <label for="email" class="form-label">Enter Your Email :</label>
                             <input type="email" class="form-control" id="useremail" name="useremail" autocomplete="on">
@@ -90,7 +91,7 @@
             })
             .then((result) => {
                     console.log(result)
-                     
+                    document.querySelector('.passwordlink').innerHTML=result.data;
                 }
                 ).catch((err) => {
                     console.log(err);

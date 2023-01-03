@@ -8,6 +8,7 @@ const forgotRoutes=require('./routes/forgot')
 const sequelize=require('./util/database');
 const User=require('./model/user')
 const Expense=require('./model/expense')
+const ForgotPassword=require('./model/forgot')
 const crypto=require('crypto');
 const Order = require('./model/order');
 
@@ -31,6 +32,9 @@ Expense.belongsTo(User)
 
 User.hasMany(Order)
 Order.belongsTo(User)
+
+User.hasMany(ForgotPassword)
+ForgotPassword.belongsTo(User)
 
 
 

@@ -5,6 +5,9 @@ const forgotController=require('../controller/forgot')
 
 router.post('/forgotpassword',forgotController.forgotPassword);
 
+router.get('/resetPassword/:id',forgotController.resetPassword);
+router.get('/updatepassword/:id',forgotController.updatepassword)
+
 
 
 
