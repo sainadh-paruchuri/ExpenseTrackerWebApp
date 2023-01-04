@@ -17,7 +17,10 @@ router.post('/expense',userAuthenticate.authenticate,userController.addExpense);
 
 router.get('/getExpenses',userAuthenticate.authenticate,userController.getExpense);
 
+router.get('/download',userAuthenticate.authenticate,userController.expensedownload)
+
 router.get('/purchasepremium',userAuthenticate.authenticate,puchaseController.purchasepremium);
+
 router.post('/updatetransactionstatus',userAuthenticate.authenticate,puchaseController.updateTransactionStatus)
 
 

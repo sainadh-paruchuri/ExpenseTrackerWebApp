@@ -2,8 +2,9 @@ const path=require('path')
 const User=require('../model/user')
 const bcrypt=require('bcrypt');
 const Expense=require('../model/expense')
-const jwt=require('jsonwebtoken') 
-
+const jwt=require('jsonwebtoken'); 
+const AWS=require('aws-sdk');
+const { resolve } = require('path');
 
 exports.signup=(req,res,next)=>{
     res.sendFile(path.join(__dirname,'..','views','signUp1.html'))
@@ -80,6 +81,66 @@ exports.login=(req,res,next)=>{
             // }
         })
     }
+}
+function uploadeToS3(data,filename){
+    const BUCKET_NAME='expensetrackingdata';
+    const IAM_USER_KEY='AKIA3KRRFVNUHZ35H4YE';
+    const IAM_USER_SECRETE='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';
+
+    let s3bucket=new AWS.S3({
+        accessKeyId:IAM_USER_KEY,
+        secretAccessKey:IAM_USER_SECRETE,
+        // Bucket:BUCKET_NAME
+    })
+        var params={
+            Body:data,
+            Bucket:BUCKET_NAME,
+            Key:filename,
+            ACL:'public-read'
+            
+        }
+        // s3bucket.upload(params,(err,s3response)=>{
+        //     if(err){
+        //         return console.log(err);
+        //     }
+        //     else{
+        //         console.log('success',s3response.Location);
+        //         return s3response.Location;
+        //     }
+        // })
+        return new Promise((resolve,reject)=>{
+             s3bucket.upload(params,(err,s3response)=>{
+            if(err){
+                reject(err)
+            }
+            else{
+                console.log('success',s3response.Location);
+                resolve(s3response.Location);
+            }
+            })
+        })
+
+}
+
+exports.expensedownload=async (req,res)=>{
+     try{
+    const expense=await Expense.findAll({where:{userId:req.result.id}})
+    console.log(expense)
+    const stringifiedExpense=JSON.stringify(expense)
+    const userId=req.result.id;
+    const filename=`Expense${userId}/${new Date()}.txt`
+   
+    const fileURL=await uploadeToS3(stringifiedExpense,filename);
+    console.log(fileURL);
+     res.status(200).json({ fileURL , success:true,ispremium:req.result.ispremiumuser})
+    }
+    catch(err){
+        console.log(err);
+        res.status(500).json({fileURL:'',success:false})
+    }
+   
+   
+    
 }
 
 exports.addExpense=(req,res)=>{

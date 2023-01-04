@@ -5,18 +5,19 @@ const userController = require('./user')
 
 
 const purchasepremium =async (req, res) => {
-    try {
-        let userId=req.result.id;
+    
+  let userId=req.result.id;
   var rzp = new Razorpay({
-    key_id:'rzp_test_okzNi3Xajv2I2A',
-    key_secret:'G721sM9ZemesnliD14qvSDHt'
+    key_id:'rzp_test_lIlyohW9CAnP7k',
+    key_secret:'GN1WtvQJMSdAZ32rBbr1vHxL'
   });
   const amount = 3000;
-
+try {
   rzp.orders.create({ amount, currency: "INR" }, (err, order) => {
     if (err) {
-      throw new Error(err);
+      console.log(err);
     }
+    console.log(order);
     Order.create({ orderid: order.id, status: "PENDING" ,userId:userId})
       .then(() => {
         return res.status(201).json({ order, key_id: rzp.key_id });
