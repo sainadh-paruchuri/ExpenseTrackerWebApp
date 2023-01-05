@@ -76,9 +76,6 @@ exports.login=(req,res,next)=>{
             })
            
              }
-            //  else{
-            //      return res.status(404).json({msg:'User not found'})
-            // }
         })
     }
 }
@@ -90,7 +87,6 @@ function uploadeToS3(data,filename){
     let s3bucket=new AWS.S3({
         accessKeyId:IAM_USER_KEY,
         secretAccessKey:IAM_USER_SECRETE,
-        // Bucket:BUCKET_NAME
     })
         var params={
             Body:data,
@@ -99,15 +95,6 @@ function uploadeToS3(data,filename){
             ACL:'public-read'
             
         }
-        // s3bucket.upload(params,(err,s3response)=>{
-        //     if(err){
-        //         return console.log(err);
-        //     }
-        //     else{
-        //         console.log('success',s3response.Location);
-        //         return s3response.Location;
-        //     }
-        // })
         return new Promise((resolve,reject)=>{
              s3bucket.upload(params,(err,s3response)=>{
             if(err){
@@ -164,12 +151,28 @@ exports.addExpense=(req,res)=>{
 
 }
 
-exports.getExpense=(req,res)=>{
+exports.getExpense=async (req,res)=>{
+    const page=+req.query.page||1
     console.log(req.result.id);
     console.log("hi hello");
-    Expense.findAll({where :{userId:req.result.id}})
+    const total=await Expense.count({where :{userId:req.result.id}});
+    console.log(total);
+
+    Expense.findAll({
+        where :{userId:req.result.id},
+        offset:(page-1)*4,
+        limit:4
+    })
     .then(results=>{
-        res.status(200).json({ispremium:req.result.ispremiumuser,results:results});
+        res.status(200).json({
+            ispremium:req.result.ispremiumuser,results:results,
+            currentPage:page,
+            hasNextPage:4*page<total,
+            nextPage:page+1,
+            hasPreviousPage:page>1,
+            previousPage:page-1,
+            lastPage:Math.ceil(total/4),
+        });
         console.log(results);
         })
     .catch(err=>console.log(err))
