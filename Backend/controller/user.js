@@ -6,6 +6,12 @@ const jwt=require('jsonwebtoken');
 const AWS=require('aws-sdk');
 const { resolve } = require('path');
 
+let Items_Per_Page;
+exports.pages=(req,res)=>{
+    console.log(req.body);
+    Items_Per_Page=Number(req.body.pages);
+}
+
 exports.signup=(req,res,next)=>{
     res.sendFile(path.join(__dirname,'..','views','signUp1.html'))
 
@@ -153,25 +159,22 @@ exports.addExpense=(req,res)=>{
 
 exports.getExpense=async (req,res)=>{
     const page=+req.query.page||1
-    console.log(req.result.id);
-    console.log("hi hello");
+   
     const total=await Expense.count({where :{userId:req.result.id}});
-    console.log(total);
-
     Expense.findAll({
         where :{userId:req.result.id},
-        offset:(page-1)*4,
-        limit:4
+        offset:(page-1)*Items_Per_Page,
+        limit:Items_Per_Page
     })
     .then(results=>{
         res.status(200).json({
             ispremium:req.result.ispremiumuser,results:results,
             currentPage:page,
-            hasNextPage:4*page<total,
+            hasNextPage:Items_Per_Page*page<total,
             nextPage:page+1,
             hasPreviousPage:page>1,
             previousPage:page-1,
-            lastPage:Math.ceil(total/4),
+            lastPage:Math.ceil(total/Items_Per_Page),
         });
         console.log(results);
         })

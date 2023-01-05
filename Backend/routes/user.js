@@ -23,6 +23,8 @@ router.get('/purchasepremium',userAuthenticate.authenticate,puchaseController.pu
 
 router.post('/updatetransactionstatus',userAuthenticate.authenticate,puchaseController.updateTransactionStatus)
 
+router.post('/pages',userController.pages);
+
 
 module.exports=router;
 
