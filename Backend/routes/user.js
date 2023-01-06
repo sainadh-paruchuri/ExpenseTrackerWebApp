@@ -26,6 +26,8 @@ router.post('/updatetransactionstatus',userAuthenticate.authenticate,puchaseCont
 
 router.post('/pages',userController.pages);
 
+router.post('/delete',userController.delete)
+
 
 module.exports=router;
 

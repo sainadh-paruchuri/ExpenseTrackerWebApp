@@ -5,6 +5,7 @@ const Expense=require('../model/expense')
 const jwt=require('jsonwebtoken'); 
 const AWS=require('aws-sdk');
 const { resolve } = require('path');
+const { json } = require('body-parser');
 require('dotenv').config();
 
 
@@ -183,6 +184,22 @@ exports.getExpense=async (req,res)=>{
         console.log(results);
         })
     .catch(err=>console.log(err))
+}
+
+exports.delete=async(req,res)=>{
+    try{
+    console.log(req.body);
+    const id=Number(req.body.id)
+    console.log(id)
+     if(!id){
+           return res.status(404).json({error:'id is missing'})
+        }
+        await Expense.destroy({where:{id:id}})
+        res.status(200).json({msg:'successfully deleted'});
+    }
+    catch(err){
+        res.status(500).json(err)
+    }
 }
 
 

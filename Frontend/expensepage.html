@@ -211,8 +211,19 @@
         const tr=document.querySelector('.tr')
         let count=0;
         
-        // tr.addEventListener('click', deleteUser)
+         tbody.addEventListener('click', deleteUser)
         
+         function deleteUser(e){
+            console.log(e.target.parentElement.parentElement.id)
+            const id= e.target.parentElement.parentElement.id
+            axios.post('http://localhost:4000/delete',{
+                id:id
+         }).then(response=>{
+            console.log(response)
+            alert(response.data.msg)
+            location.reload();
+         }).catch(err=>console.log(err))
+         }
 
             
         pages.addEventListener('change',e=>{
@@ -311,12 +322,11 @@
             const td3 = document.createElement('td');
             td3.appendChild(document.createTextNode(`${category}`))
 
-            const button=document.createElement('button');
-            button.appendChild(document.createTextNode('DELETE'))
-            button.setAttribute('id','delete')
-            button.setAttribute('onclick','deleteUser()')
-            button.setAttribute('class','btn btn-danger ms-lg-2')
-            td3.appendChild(button)
+            // const button=document.createElement('button');
+            // button.appendChild(document.createTextNode('DELETE'))
+            // button.id='delete';
+            // button.setAttribute('class','btn btn-danger ms-lg-2')
+            td3.innerHTML+=`<button id='delete' class='btn btn-danger ms-lg-2'>delete</button>`
 
 
 
@@ -450,15 +460,15 @@
                     pegination.appendChild(btn1);
 
                 }
-                if (lastPage!=currentPage && nextPage!=lastPage) {
-                  const btn3 = document.createElement('button');
-                  btn3.innerHTML = lastPage
-                  btn3.setAttribute('class', 'btn btn-sm btn-outline-success btn-center')
-                  btn3.setAttribute('id', 'pagbuttons')
-                  btn3.addEventListener('click', () => getProducts(nextPage))
-                  pegination.appendChild(btn3);
+            //     if (lastPage!=currentPage && nextPage!=lastPage) {
+            //       const btn3 = document.createElement('button');
+            //       btn3.innerHTML = lastPage
+            //       btn3.setAttribute('class', 'btn btn-sm btn-outline-success btn-center')
+            //       btn3.setAttribute('id', 'pagbuttons')
+            //       btn3.addEventListener('click', () => getProducts(nextPage))
+            //       pegination.appendChild(btn3);
 
-              }
+            //   }
             }
 
          function getProducts(page) {
@@ -478,7 +488,8 @@
                     console.log(err);
                 }
 
-            }               
+            }   
+            
     </script>
 </body>
 
