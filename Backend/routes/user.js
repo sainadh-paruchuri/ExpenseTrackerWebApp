@@ -5,6 +5,7 @@ const userController=require('../controller/user')
 const userAuthenticate=require('../middleware/auth')
 const puchaseController=require('../controller/purchase')
 
+
 router.get('/form',userController.signup)
 
 router.post('/users',userController.addUser)

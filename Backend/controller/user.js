@@ -5,6 +5,9 @@ const Expense=require('../model/expense')
 const jwt=require('jsonwebtoken'); 
 const AWS=require('aws-sdk');
 const { resolve } = require('path');
+require('dotenv').config();
+
+
 
 let Items_Per_Page;
 exports.pages=(req,res)=>{
@@ -49,10 +52,10 @@ exports.users=(req,res,next)=>{
 }
 
 const generateAccesToken=(id,premium)=>{
-    return jwt.sign({userId:id,ispremium:premium },'b4eef7abb67e5f2aff0c187f6bb44fa79b90c895ba9c0d7727b59cd')
+    return jwt.sign({userId:id,ispremium:premium },process.env.GENERATE_ACCESS_TOKEN)
 }
 exports.generateAccesToken1=(id,premium)=>{
-    return jwt.sign({userId:id,ispremium:premium },'b4eef7abb67e5f2aff0c187f6bb44fa79b90c895ba9c0d7727b59cd')
+    return jwt.sign({userId:id,ispremium:premium },process.env.GENERATE_ACCESS_TOKEN)
 }
 exports.login=(req,res,next)=>{
     console.log(req.body);
@@ -86,9 +89,10 @@ exports.login=(req,res,next)=>{
     }
 }
 function uploadeToS3(data,filename){
-    const BUCKET_NAME='expensetrackingdata';
-    const IAM_USER_KEY='AKIA3KRRFVNUHZ35H4YE';
-    const IAM_USER_SECRETE='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';
+    const BUCKET_NAME=process.env.BUCKET_NAME
+    console.log(BUCKET_NAME);
+    const IAM_USER_KEY=process.env.IAM_USER_KEY;
+    const IAM_USER_SECRETE=process.env.IAM_USER_SECRETE;
 
     let s3bucket=new AWS.S3({
         accessKeyId:IAM_USER_KEY,

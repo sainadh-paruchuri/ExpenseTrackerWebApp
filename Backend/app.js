@@ -11,15 +11,20 @@ const Expense=require('./model/expense')
 const ForgotPassword=require('./model/forgot')
 const crypto=require('crypto');
 const Order = require('./model/order');
-
+const helmet=require('helmet')
+const morgan=require('morgan')
+const fs=require('fs')
 
 const app=express();
 
 // const key1=crypto.randomBytes(32).toString('hex');
 // console.log(key1)
+const accessLogStream=fs.createWriteStream(path.join(__dirname,'access.log'),{flags:'a'})
 
-
+app.use(helmet())
+app.use(morgan('combined',{stream:accessLogStream}))
 // app.use(bodyParser.urlencoded({extended:true}))
+
 app.use(bodyParser.json())
 app.use(cors())
 
