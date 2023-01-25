@@ -99,7 +99,7 @@
             const email=document.getElementById('useremail').value;
             const password=document.getElementById('password').value;
             console.log(email);
-
+            try{
             axios.post('http://localhost:4000/login',{
                 useremail:email,
                 password:password
@@ -110,7 +110,7 @@
                     console.log(result)
                     localStorage.setItem('token',result.data.token)
                     alert(result.data.msg)
-                    window.location.href="expensepage.html";
+                    window.location.href="./expensepage.html";
                 }
             }).catch((err) => {
                 if (err.response.status != 200) {
@@ -118,6 +118,11 @@
                 }
                 console.log(err);
             });
+        }
+        catch(err){
+            alert('something went wromg')
+            console.log(err);
+        }
         })
     </script>
 </body>

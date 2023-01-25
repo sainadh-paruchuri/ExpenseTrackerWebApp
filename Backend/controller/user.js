@@ -10,7 +10,7 @@ require('dotenv').config();
 
 
 
-let Items_Per_Page;
+let Items_Per_Pag=5;
 exports.pages=(req,res)=>{
     console.log(req.body);
     Items_Per_Page=Number(req.body.pages);

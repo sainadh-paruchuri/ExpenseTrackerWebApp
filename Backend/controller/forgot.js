@@ -34,6 +34,7 @@ exports.forgotPassword=async (req,res)=>{
 exports.resetPassword=async (req,res)=>{
     const id=req.params.id;
     console.log(id);
+    try{
     ForgotPassword.findOne({where:{id:id}})
     .then(result=>{
         console.log(result)
@@ -58,6 +59,10 @@ exports.resetPassword=async (req,res)=>{
         }
     })
     .catch(err=>console.log(err))
+}
+catch(err){
+    res.status(500).json({msg :err});
+}
 
 
 }
@@ -67,7 +72,7 @@ exports.updatepassword=async (req,res)=>{
     let id=req.params.id;
     console.log(req.query.password);
     let passwords=req.query.password;
-
+    try{
     ForgotPassword.findOne({where:{id:id}})
     .then(result=>{
         User.findOne({where:{id:result.userId}})
@@ -82,4 +87,8 @@ exports.updatepassword=async (req,res)=>{
             }            
         })
     })
+}
+catch(err){
+    res.status(500).json({msg:err})
+}
 }

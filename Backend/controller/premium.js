@@ -5,6 +5,7 @@ require('dotenv').config();
 
 exports.premiumLeaderBoard=async (req,res)=>{
         const expenses=await Expense.findAll()
+        try{
     const userLeaerBoardDetails=await User.findAll({
         attributes:['id','username',[sequelize.fn('sum',sequelize.col('expenses.amount')), 'total_cost']],
         include:[
@@ -18,5 +19,9 @@ exports.premiumLeaderBoard=async (req,res)=>{
         order:[['total_cost','DESC']]
     });
     res.status(200).json(userLeaerBoardDetails)
+}
+catch(err){
+    res.status(500).json({msg:err})
+}
 
 }

@@ -97,6 +97,7 @@ signup.addEventListener('click',(e)=>{
     let password = document.getElementById('password').value;
     let value=true;
    console.log(name);
+   try{
    axios.get('http://localhost:4000/users')
    .then(result=>{
     result.data.forEach(element => {
@@ -107,7 +108,12 @@ signup.addEventListener('click',(e)=>{
     });
    })
    .catch(err=>console.log(err))
+}
+catch(err){
+    alert('something went wrong')
+}
    if(value){
+    try{
    axios.post('http://localhost:4000/users',{
         username:name,
         useremail:email,
@@ -120,45 +126,13 @@ signup.addEventListener('click',(e)=>{
         console.log(err);
     });
 }
+catch(err){
+    alert('something went wrong')
+    console.log(err);
+}
+}
 
 })
-    //    const signup=document.getElementById('signup');
-    //    console.log(signup)
-    //    let name = document.getElementById('username').value;
-
-    //    signup.addEventListener('submit',(event)=>{
-    //      event.preventDefault();
-    //         console.log(name.innerText)
-        
-    //    })
-        // async function signup(event){
-        //     event.preventDefault();
-        //     const name= document.getElementById('username').value;
-        //     document.body.innerHTML=name;
-        //     console.log(name);
-        // }
-
-        // const signup=document.getElementById('signup');
-        // signup.addEventListener('click',(event)=>{
-        //     event.preventDefault();
-        //     const name = document.getElementById('name').innerText;
-        //     const email = document.getElementById('email')
-        //     const password=document.getElementById('password');
-        //     console.log(name);
-
-        //     // axios.post('http://localhost:4000/users',{
-        //     //     username:name,
-        //     //     useremail:email,
-        //     //     password:password
-        //     // })
-        //     // .then((result) => {
-        //     //     console.log(result)
-        //     // }).catch((err) => {
-        //     //     console.log(err)
-        //     // });
-
-
-        // })
     </script>
 </body>
 
