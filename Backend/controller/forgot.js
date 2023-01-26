@@ -16,7 +16,7 @@ exports.forgotPassword=async (req,res)=>{
             let active=true
             ForgotPassword.create({id,userId,active})
             .then((result) => {
-                res.send(`<a href="http://localhost:4000/resetPassword/${id}">reset</a>`)
+                res.send(`<a href="http://54.168.51.154:5000/resetPassword/${id}">reset</a>`)
                 
             }).catch((err) => {
                 res.send({err,msg:fale})
