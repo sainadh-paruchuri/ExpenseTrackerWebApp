@@ -99,7 +99,7 @@
         console.log(email);
         try {
           axios
-            .post("http://localhost:5000/forgotpassword", {
+            .post("http://54.168.51.154:5000/forgotpassword", {
               useremail: email,
             })
             .then((result) => {

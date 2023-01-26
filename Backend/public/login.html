@@ -24,12 +24,18 @@
         margin: auto;
         padding-left: 3rem;
         box-shadow: 12px 12px 12px black;
+        /* background-color: rgb(16, 244, 16); */
         background-color: rgb(237, 230, 230);
+        background-image: url(https://play-lh.googleusercontent.com/b-iMXzxfTZcrWB9PQHtGffagDum8Kb6-asGagci8XMBPMU7e800iSp1JjCF1fCNf2M8=h500);
+        background-repeat: no-repeat;
+        background-size: cover;
         border-radius: 10px;
       }
 
       body {
-        background-color: wheat;
+        background-image: url(https://play-lh.googleusercontent.com/b-iMXzxfTZcrWB9PQHtGffagDum8Kb6-asGagci8XMBPMU7e800iSp1JjCF1fCNf2M8=h500);
+        background-repeat: no-repeat;
+        background-size: cover;
       }
 
       button {
@@ -51,7 +57,6 @@
       a {
         text-decoration: none;
       }
-
       .links {
         display: flex;
         justify-content: space-between;
@@ -65,11 +70,10 @@
       <div class="container my-lg-5">
         <div class="row">
           <form class="form">
-            <h1>Forgot Password</h1>
+            <h1>Login</h1>
             <div class="col-lg-6">
-              <div class="passwordlink text-center"></div>
               <div class="form-group">
-                <label for="email" class="form-label">Enter Your Email :</label>
+                <label for="email" class="form-label">Email :</label>
                 <input
                   type="email"
                   class="form-control"
@@ -78,10 +82,23 @@
                   autocomplete="on"
                 />
               </div>
-
-              <button type="submit" id="forgot">Submit</button>
+              <div class="form-group">
+                <label for="password" class="form-label">Password :</label>
+                <input
+                  type="password"
+                  class="form-control"
+                  id="password"
+                  name="password"
+                  required
+                  autocomplete="on"
+                />
+              </div>
+              <button type="submit" id="login">Login</button>
             </div>
-            <a href="./login.html"><-Back to login</a>
+            <div class="links">
+              <h6>Don't have an account? <a href="signUp1.html">SignUp</a></h6>
+              <a href="forgot.html">forgot password</a>
+            </div>
           </form>
         </div>
       </div>
@@ -93,24 +110,35 @@
       referrerpolicy="no-referrer"
     ></script>
     <script>
-      document.getElementById("forgot").addEventListener("click", (e) => {
+      const login = document.getElementById("login");
+      login.addEventListener("click", (e) => {
         e.preventDefault();
-        let email = document.getElementById("useremail").value;
+        const email = document.getElementById("useremail").value;
+        const password = document.getElementById("password").value;
         console.log(email);
         try {
           axios
-            .post("http://localhost:5000/forgotpassword", {
+            .post("http://54.168.51.154:5000/login", {
               useremail: email,
+              password: password,
             })
             .then((result) => {
-              console.log(result);
-              document.querySelector(".passwordlink").innerHTML = result.data;
+              console.log(result.data.msg);
+              if (result.status == 200) {
+                console.log(result);
+                localStorage.setItem("token", result.data.token);
+                alert(result.data.msg);
+                window.location.href = "./expensepage.html";
+              }
             })
             .catch((err) => {
+              if (err.response.status != 200) {
+                alert(err.response.data.msg);
+              }
               console.log(err);
             });
         } catch (err) {
-          alert("something went wrong");
+          alert("something went wromg");
           console.log(err);
         }
       });

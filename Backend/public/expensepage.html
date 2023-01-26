@@ -239,7 +239,7 @@
         const id = e.target.parentElement.parentElement.id;
         try {
           axios
-            .post("http://localhost:5000/delete", {
+            .post("http://54.168.51.154:5000/delete", {
               id: id,
             })
             .then((response) => {
@@ -271,7 +271,7 @@
         try {
           axios
             .post(
-              "http://localhost:5000/expense",
+              "http://54.168.51.154:5000/expense",
               {
                 amount: amount,
                 description: description,
@@ -316,7 +316,7 @@
           localStorage.getItem("displaypages ");
         try {
           axios
-            .post("http://localhost:5000/pages", {
+            .post("http://54.168.51.154:5000/pages", {
               pages: localStorage.getItem("displaypages"),
             })
             .then((res) => console.log(res))
@@ -340,7 +340,7 @@
         console.log(tocken);
         try {
           axios
-            .get(`http://localhost:5000/getExpenses/?page=${page}`, {
+            .get(`http://54.168.51.154:5000/getExpenses/?page=${page}`, {
               headers: { Authorization: tocken },
             })
             .then((result) => {
@@ -396,7 +396,7 @@
         showButton.onclick = async () => {
           const token = localStorage.getItem("token");
           const userLeaderBoard = await axios.get(
-            "http://localhost:5000/premiumleaderboard",
+            "http://54.168.51.154:5000/premiumleaderboard",
             { headers: { Authorization: token } }
           );
           console.log(userLeaderBoard);
@@ -415,7 +415,7 @@
         const tocken = localStorage.getItem("token");
         try {
           const response = await axios.get(
-            "http://localhost:5000/purchasepremium",
+            "http://54.168.51.154:5000/purchasepremium",
             {
               headers: { Authorization: tocken },
             }
@@ -428,7 +428,7 @@
             handler: async function (response) {
               console.log(response);
               const res = await axios.post(
-                "http://localhost:5000/updatetransactionstatus",
+                "http://54.168.51.154:5000/updatetransactionstatus",
                 {
                   order_id: options.order_id,
                   payment_id: response.razorpay_payment_id,
@@ -467,7 +467,7 @@
           const tocken = localStorage.getItem("token");
           try {
             axios
-              .get("http://localhost:5000/download", {
+              .get("http://54.168.51.154:5000/download", {
                 headers: { Authorization: tocken },
               })
               .then((response) => {
@@ -550,7 +550,7 @@
 
         try {
           axios
-            .get(`http://localhost:5000/getExpenses?page=${page}`, {
+            .get(`http://54.168.51.154:5000/getExpenses?page=${page}`, {
               headers: { Authorization: tocken },
             })
             .then((response) => {
